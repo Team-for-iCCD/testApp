@@ -1,103 +1,100 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(new MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return new MaterialApp(
-      title: 'Generated App',
-      theme: new ThemeData(
-        brightness: Brightness.dark,
-        primarySwatch: Colors.blue,
-        primaryColor: const Color(0xFF212121),
-        accentColor: const Color(0xFF64ffda),
-        canvasColor: const Color(0xFF303030),
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
       ),
-      home: new MyHomePage(),
+      home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key}) : super(key: key);
+  const MyHomePage({super.key, required this.title});
+
+  final String title;
+
   @override
-  _MyHomePageState createState() => new _MyHomePageState();
+  State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: new AppBar(
-        title: new Text('App Name'),
-      ),
-      body: new Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          mainAxisSize: MainAxisSize.max,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            new Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  new Text(
-                    "Text1",
-                    style: new TextStyle(
-                        fontSize: 41.0,
-                        color: const Color(0xFFffffff),
-                        fontWeight: FontWeight.w200,
-                        fontFamily: "Roboto"),
-                  )
-                ]),
-            new Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  new Checkbox(key: null, onChanged: checkChanged, value: true),
-                  new Text(
-                    "CheckBox",
-                    style: new TextStyle(
-                        fontSize: 20.0,
-                        color: const Color(0xFFffffff),
-                        fontWeight: FontWeight.w100,
-                        fontFamily: "Roboto"),
-                  )
-                ]),
-            new Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  new Slider(
-                    key: null,
-                    onChanged: sliderChanged,
-                    value: 0.35,
-                  )
-                ]),
-            new RaisedButton(
-                key: null,
-                onPressed: buttonPressed,
-                color: const Color(0xFFe0e0e0),
-                child: new Text(
-                  "Button",
-                  style: new TextStyle(
-                      fontSize: 25.0,
-                      color: const Color(0xFF000000),
-                      fontWeight: FontWeight.w200,
-                      fontFamily: "Merriweather"),
-                ))
-          ]),
-    );
+  int _counter = 0;
+  void _increment() {
+    //setStateで画面に反映
+    setState(() {
+      _counter++;
+    });
   }
 
-  void sliderChanged(double value) {}
+  void _decrement() {
+    setState(() {
+      _counter--;
+    });
+  }
 
-  void buttonPressed() {}
-
-  void checkChanged() {}
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+          title: const Row(children: [Icon(Icons.create), Text("1st title")]),
+        ),
+        body: Column(children: [
+          const Text("Hello Flutter"),
+          const Text("test application"),
+          TextButton(onPressed: _decrement, child: const Text("text button")),
+          Text(
+            '$_counter',
+            style: Theme.of(context).textTheme.headlineLarge,
+          ),
+          if (_counter % 2 == 0)
+            const Text("Even",
+                style: TextStyle(fontSize: 20, color: Colors.red)),
+          const Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Icon(
+                Icons.favorite,
+                color: Colors.pink,
+                size: 24,
+              ),
+              Icon(
+                Icons.audiotrack,
+                color: Colors.green,
+                size: 30,
+              ),
+              Icon(
+                Icons.beach_access,
+                color: Colors.blue,
+                size: 36,
+              )
+            ],
+          )
+        ]),
+        floatingActionButton: FloatingActionButton(
+          onPressed: _increment,
+          child: const Icon(Icons.add),
+        ),
+        drawer: const Drawer(
+            child: Center(
+          child: Text("Drawer"),
+        )),
+        endDrawer: const Drawer(
+          child: Center(
+            child: Text("EndDrawer"),
+          ),
+        ));
+  }
 }
