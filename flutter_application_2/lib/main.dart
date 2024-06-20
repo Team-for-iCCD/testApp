@@ -1,39 +1,9 @@
-import 'package:flutter/material.dart'
-    show
-        AlertDialog,
-        Alignment,
-        AppBar,
-        BottomNavigationBar,
-        BottomNavigationBarItem,
-        Brightness,
-        BuildContext,
-        Color,
-        Colors,
-        Column,
-        Container,
-        EdgeInsets,
-        ElevatedButton,
-        FontWeight,
-        Icon,
-        Icons,
-        MainAxisAlignment,
-        MainAxisSize,
-        MaterialApp,
-        Navigator,
-        Padding,
-        Scaffold,
-        State,
-        StatefulWidget,
-        StatelessWidget,
-        Text,
-        TextButton,
-        TextEditingController,
-        TextField,
-        TextStyle,
-        ThemeData,
-        Widget,
-        runApp,
-        showDialog;
+import 'package:flutter/material.dart';
+import 'package:flutter_application_2/screens/add_order.dart';
+import 'package:flutter_application_2/screens/order_list.dart';
+import 'package:flutter_application_2/screens/regist_menu.dart';
+import 'package:flutter_application_2/screens/scan.dart';
+import 'package:flutter_application_2/widgets/bottom_navigation_bar.dart';
 
 void main() {
   runApp(const MyApp());
@@ -46,9 +16,17 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(brightness: Brightness.dark),
-        home: MyHomePage(title: title));
+      title: 'Flutter Demo',
+      theme: ThemeData(brightness: Brightness.dark),
+      initialRoute: '/main',
+      routes: {
+        '/main': (context) => const MyHomePage(title: 'main'),
+        '/addorder': (context) => const AddOrderView(),
+        '/orderlist': (context) => const OrderList(),
+        '/registmenu': (context) => const RegistMenu(),
+        '/scan': (context) => const Scan(),
+      },
+    );
   }
 }
 
@@ -156,32 +134,10 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _index,
-        backgroundColor: Colors.white,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.format_list_bulleted, color: Colors.white),
-            label: 'Order List',
-            backgroundColor: Colors.lightBlueAccent,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.format_list_bulleted_add, color: Colors.white),
-            label: 'Add Order',
-            backgroundColor: Colors.lightGreenAccent,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.camera, color: Colors.white),
-            label: 'Scan',
-            backgroundColor: Colors.purpleAccent,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.add_to_photos, color: Colors.white),
-            label: 'Regist Menu',
-            backgroundColor: Colors.redAccent,
-          )
-        ],
-        onTap: tapBottomIcon,
+      bottomNavigationBar: const MyBottomNavigationBar(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => {Navigator.pushNamed(context, '/addorder')},
+        child: const Icon(Icons.next_plan),
       ),
     );
   }
