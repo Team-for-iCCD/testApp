@@ -6,93 +6,78 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Generated App',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+        primarySwatch: Colors.blue,
+        primaryColor: const Color(0xff2196f3),
+        canvasColor: const Color(0xfffafafa),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
-
+  const MyHomePage({super.key});
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  // ignore: library_private_types_in_public_api
+  _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-  void _increment() {
-    //setStateで画面に反映
-    setState(() {
-      _counter++;
-    });
-  }
+class _MyHomePageState extends State<MyHomePage>
+    with SingleTickerProviderStateMixin {
+  static const List<Tab> tabs = <Tab>[
+    Tab(
+      text: 'One',
+    ),
+    Tab(
+      text: 'Two',
+    ),
+    Tab(
+      text: 'Three',
+    )
+  ];
 
-  void _decrement() {
-    setState(() {
-      _counter--;
-    });
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: tabs.length, vsync: this);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Row(children: [Icon(Icons.create), Text("1st title")]),
+      appBar: AppBar(
+        title: const Text('Tab App'),
+        bottom: TabBar(
+          tabs: tabs,
+          controller: _tabController,
         ),
-        body: Column(children: [
-          const Text("Hello Flutter"),
-          const Text("test application"),
-          TextButton(onPressed: _decrement, child: const Text("text button")),
-          Text(
-            '$_counter',
-            style: Theme.of(context).textTheme.headlineLarge,
-          ),
-          if (_counter % 2 == 0)
-            const Text("Even",
-                style: TextStyle(fontSize: 20, color: Colors.red)),
-          const Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Icon(
-                Icons.favorite,
-                color: Colors.pink,
-                size: 24,
-              ),
-              Icon(
-                Icons.audiotrack,
-                color: Colors.green,
-                size: 30,
-              ),
-              Icon(
-                Icons.beach_access,
-                color: Colors.blue,
-                size: 36,
-              )
-            ],
-          )
-        ]),
-        floatingActionButton: FloatingActionButton(
-          onPressed: _increment,
-          child: const Icon(Icons.add),
+      ),
+      body: TabBarView(
+        controller: _tabController,
+        children: tabs.map((Tab tab) {
+          return createTab(tab);
+        }).toList(),
+      ),
+    );
+  }
+
+  Widget createTab(Tab tab) {
+    return Center(
+      child: Text(
+        'This is "${tab.text}" Tab.',
+        style: const TextStyle(
+          fontSize: 32,
+          color: Colors.blue,
         ),
-        drawer: const Drawer(
-            child: Center(
-          child: Text("Drawer"),
-        )),
-        endDrawer: const Drawer(
-          child: Center(
-            child: Text("EndDrawer"),
-          ),
-        ));
+      ),
+    );
   }
 }

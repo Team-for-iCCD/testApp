@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_application_2/screens/add_order.dart';
 import 'package:flutter_application_2/screens/order_list.dart';
 import 'package:flutter_application_2/screens/regist_menu.dart';
@@ -50,7 +51,46 @@ class Data {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  static final _data = [
+  with SingleTickerProviderStateMixin{
+    static const List<Tab> tabs=<Tab>[
+      Tab(text: 'One',),
+      Tab(text: 'Two',),
+      Tab(text: 'Three',),
+    ];
+    late TabController _tabController;
+
+    @override
+    void initState(){
+      super.initState();
+      _tabController=TabController(length: tabs.length, vsync: this);
+    }
+
+    @override
+    Widget build(BuildContext context){
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text('main'),
+          bottom: TabBar(
+            tabs: tabs,controller: _tabController,
+          ),
+        ),
+        body: TabBarView(children: tabs.map((Tab tab){return createTab(tab);}).toList(),),
+      );
+    }
+
+    Widget createTab(Tab tab){
+      return Center(
+        child: Text(
+          'This is "${tab.text}" Tab.',
+          style: const TextStyle(
+            fontSize: 32,
+            color: Colors.blue,
+          ),
+        ),
+      );
+    }
+  }
+  /*static final _data = [
     Data('Apple', 200),
     Data('Orange', 150),
     Data('Peach', 300)
@@ -140,5 +180,5 @@ class _MyHomePageState extends State<MyHomePage> {
         child: const Icon(Icons.next_plan),
       ),
     );
-  }
+  }*/
 }
